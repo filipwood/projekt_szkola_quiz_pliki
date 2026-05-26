@@ -326,12 +326,13 @@
 <div v-if="poziom_trudnosci == 3">
   <div class="question-title">
     Jakiego kraju/terytorium jest to język?
-    <button id="audioplay" @click="playAudio">
-    <img id="audioplayimg" :src="'mikrofon-ikona.png'">
-    </button>
+    
   </div>
   <div class="question-text">
     {{ Pytania.trudny[pytanie - 1] }}
+    <button id="audioplay" @click="playAudio">
+    <img id="audioplayimg" :src="'mikrofon-ikona.png'">
+    </button>
     </div>
 
 
