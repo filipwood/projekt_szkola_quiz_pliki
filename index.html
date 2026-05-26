@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="stylesheet" href="style.css">
+<link rel="icon" href="https://raw.githubusercontent.com/filipwood/projekt_szkola_quiz_pliki/refs/heads/main/icon.png">
+  <link
+    href="https://cdn.jsdelivr.net/npm/jsvectormap/dist/css/jsvectormap.min.css"
+    rel="stylesheet"
+  />
+  <script src="https://cdn.jsdelivr.net/npm/jsvectormap"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsvectormap/dist/maps/europe.js"></script>
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Quiz</title>
+</head>
+
+<body>
+
+  <div id="app">
+
+    <!--------------- WYBOR POZIOMU TRUDNOSCI ----------------->
+    <div id="poziomy_trudnosci" v-if="poziom_trudnosci == 0">
+  <div class="menu-trudnosci">
+
+    <h1>
+      Wybierz poziom trudności
+    </h1>
+
+    <div class="opis-menu">
+      Dopasuj quiz do swoich umiejętności
+    </div>
+
+    <div class="karty-trudnosci">
+        <div class="karta">
+        <div class="przerwa"></div>
+        <h2>
+          Łatwy
+        </h2>
+        <h3>
+          pytania są z znajomości flag świata
+        </h3>
+        <button @click="poziom_latwy" class="wybierz-btn"> wybierz </button>
+        </div>
+
+<div class="karta">
+        <div class="przerwa"></div>
+        <h2>
+          Średni
+        </h2>
+        <h3>
+          pytania są z znajomości konturów krajów świata
+        </h3>
+        <button @click="poziom_sredni" class="wybierz-btn"> wybierz </button>
+        </div>
+
+        <div class="karta">
+        <div class="przerwa"></div>
+        <h2>
+          Trudny
+        </h2>
+        <h3>
+          pytania są z znajomości języków świata (kraje oraz terytoria)
+        </h3>
+        <button @click="poziom_trudny" class="wybierz-btn"> wybierz </button>
+        </div>
+
+        <div class="karta">
+        <div class="przerwa"></div>
+        <h2>
+          Bardzo<br>Trudny
+        </h2>
+        <h3>
+          pytania są z znajomości krajobrazów krajów (streetview)
+        </h3>
+        <button @click="poziom_bardzo_trudny" class="wybierz-btn"> wybierz </button>
+        </div>
+</div>
+        <div class="info-box">
+      Każdy poziom zawiera swoje zupełnie inne pytania, gdy klikniesz "wybierz" od razu czas zacznie leciec, wiec bądz gotowy
+    </div>
+      </div>
+      </div>
+      <!--------------- POKAZYWANIE PYTAN I ODPOWIEDZI ----------------->
+<div class="quiz-container" v-if="poziom_trudnosci != 0 && quiz_zakonczony == false">
+<div class="quiz-top">
+  <div class="quiz-box-small question_change">
+      <button @click="firstquestion"> << </button>
+    <button @click="previousquestion"> < </button>
+    <button @click="nextquestion" v-if="pytanie < 25"> > </button>
+    <button @click="restartquiz"> RESTART </button>
+    </div>
+    <div class="quiz-box-small">
+      Poziom: Średni
+    </div><div class="czas-box">
+    <div class="quiz-box-small">
+      {{ laczny_czas_minuty }}:<sprawdzanie v-if="laczny_czas_sekundy < 10">0</sprawdzanie>{{ laczny_czas_sekundy }}
+    </div>
+    </div>
+    <div class="time-bar-box">
+
+    <div class="time-title">
+      Czas na odpowiedź
+    </div>
+
+    <div class="time-bar">
+      <div class="progress">
+        <div
+          class="progress-bar progress-bar-striped progress-bar-animated"
+          role="progressbar"
+          :aria-valuenow="progress"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          :style="{ width: progress + '%' }"
+        ></div>
+      </div>
+    </div>
+
+  </div>
+  </div>
+  <br>
+<div class="quiz-main">
+<div class="question-number">
+    Pytanie {{ pytanie }}
+    </div>
+    <!--------------- PYTANIA LATWE ----------------->
+
+<div v-if="poziom_trudnosci == 1">
+  <div class="question-title">
+    Podaj nazwę kraju, którego to jest flaga:
+  </div>
+  <img class="question-image" :src="Pytania.latwy[pytanie - 1]"
+  >
+  <div class="answers" :key="'latwe_' + pytanie">
+    <!-- ODPOWIEDZ A -->
+    <label class="answer-option">
+      <input
+        type="radio"
+        :name="'odp' + pytanie"
+        :id="'odp' + pytanie + '_1'"
+        :value="losowe_odpowiedzi[pytanie - 1][0]"
+        v-model="odpowiedzi_uzytkownika[pytanie - 1]"
+      >
+      <div class="answer-content">
+        <span class="answer-letter">A</span>
+        {{ losowe_odpowiedzi[pytanie - 1][0] }}
+      </div>
+    </label>
+    <!-- ODPOWIEDZ B -->
+    <label class="answer-option">
+      <input
+        type="radio"
+        :name="'odp' + pytanie"
+        :id="'odp' + pytanie + '_2'"
+        :value="losowe_odpowiedzi[pytanie - 1][1]"
+        v-model="odpowiedzi_uzytkownika[pytanie - 1]"
+      >
+      <div class="answer-content">
+        <span class="answer-letter">
+          B
+        </span>
+        {{ losowe_odpowiedzi[pytanie - 1][1] }}
+      </div>
+
+    </label>
+    <!-- ODPOWIEDZ C -->
+    <label class="answer-option">
+      <input
+        type="radio"
+        :name="'odp' + pytanie"
+        :id="'odp' + pytanie + '_3'"
+        :value="losowe_odpowiedzi[pytanie - 1][2]"
+        v-model="odpowiedzi_uzytkownika[pytanie - 1]"
+      >
+      <div class="answer-content">
+        <span class="answer-letter">
+          C
+        </span>
+        {{ losowe_odpowiedzi[pytanie - 1][2] }}
+      </div>
+    </label>
+    <!-- ODPOWIEDZ D -->
+    <label class="answer-option">
+      <input
+        type="radio"
+        :name="'odp' + pytanie"
+        :id="'odp' + pytanie + '_4'"
+
+        :value="losowe_odpowiedzi[pytanie - 1][3]"
+
+        v-model="odpowiedzi_uzytkownika[pytanie - 1]"
+      >
+      <div class="answer-content">
+        <span class="answer-letter">D</span>
+        {{ losowe_odpowiedzi[pytanie - 1][3] }}
+      </div>
+    </label>
+    <!-- NIE WIEM -->
+    <label class="answer-option">
+      <input
+        type="radio"
+        :name="'odp' + pytanie"
+        :id="'odp_nieodpowiedzial' + pytanie"
+        value="nie_wiem"
+        v-model="odpowiedzi_uzytkownika[pytanie - 1]"
+      >
+      <div class="answer-content nie-wiem-style">
+        <span class="answer-letter">?</span>
+        Nie wiem
+      </div>
+    </label>
+  </div>
+</div>
+<!--------------- PYTANIA SREDNIE ----------------->
+<div v-if="poziom_trudnosci == 2">
+  <div class="question-title">
+    Podaj nazwę kraju, którego to są tereny (lub ich część):
+  </div>
+
+  <img
+    class="question-image"
+    :src="Pytania.sredni[pytanie - 1]"
+  >
+
+  <div class="answers" :key="'srednie_' + pytanie">
+    <!-- ODPOWIEDZ A -->
+    <label class="answer-option">
+      <input
+        type="radio"
+        :name="'odp' + pytanie"
+        :id="'odp' + pytanie + '_1'"
+        :value="losowe_odpowiedzi[pytanie - 1][0]"
+        v-model="odpowiedzi_uzytkownika[pytanie - 1]"
+      >
+      <div class="answer-content">
+        <span class="answer-letter">A</span>
+        {{ losowe_odpowiedzi[pytanie - 1][0] }}
+      </div>
+    </label>
+
+    <!-- ODPOWIEDZ B -->
+    <label class="answer-option">
+      <input
+        type="radio"
+        :name="'odp' + pytanie"
+        :id="'odp' + pytanie + '_2'"
+        :value="losowe_odpowiedzi[pytanie - 1][1]"
+        v-model="odpowiedzi_uzytkownika[pytanie - 1]"
+      >
+      <div class="answer-content">
+        <span class="answer-letter">B</span>
+        {{ losowe_odpowiedzi[pytanie - 1][1] }}
+      </div>
+    </label>
+
+    <!-- ODPOWIEDZ C -->
+    <label class="answer-option">
+      <input
+        type="radio"
+        :name="'odp' + pytanie"
+        :id="'odp' + pytanie + '_3'"
+        :value="losowe_odpowiedzi[pytanie - 1][2]"
+        v-model="odpowiedzi_uzytkownika[pytanie - 1]"
+      >
+      <div class="answer-content">
+        <span class="answer-letter">C</span>
+        {{ losowe_odpowiedzi[pytanie - 1][2] }}
+      </div>
+    </label>
+
+    <!-- ODPOWIEDZ D -->
+    <label class="answer-option">
+      <input
+        type="radio"
+        :name="'odp' + pytanie"
+        :id="'odp' + pytanie + '_4'"
+        :value="losowe_odpowiedzi[pytanie - 1][3]"
+        v-model="odpowiedzi_uzytkownika[pytanie - 1]"
+      >
+      <div class="answer-content">
+        <span class="answer-letter">D</span>
+        {{ losowe_odpowiedzi[pytanie - 1][3] }}
+      </div>
+    </label>
+
+    <!-- NIE WIEM -->
+    <label class="answer-option">
+      <input
+        type="radio"
+        :name="'odp' + pytanie"
+        :id="'odp_nieodpowiedzial' + pytanie"
+        value="nie_wiem"
+        v-model="odpowiedzi_uzytkownika[pytanie - 1]"
+      >
+      <div class="answer-content nie-wiem-style">
+        <span class="answer-letter">?</span>
+        Nie wiem
+      </div>
+    </label>
+  </div>
+</div>
+
+<!--------------- PYTANIA TRUDNE ----------------->
+<div v-if="poziom_trudnosci == 3">
+  <div class="question-title">
+    Jakiego kraju/terytorium jest to język?
+  </div>
+
+  <div class="question-text">
+    {{ Pytania.trudny[pytanie - 1] }}
+  </div>
+
+  <div class="answers" :key="'trudny_' + pytanie">
+    <!-- ODPOWIEDZ A -->
+    <label class="answer-option">
+      <input
+        type="radio"
+        :name="'odp' + pytanie"
+        :id="'odp' + pytanie + '_1'"
+        :value="losowe_odpowiedzi[pytanie - 1][0]"
+        v-model="odpowiedzi_uzytkownika[pytanie - 1]"
+      >
+      <div class="answer-content">
+        <span class="answer-letter">A</span>
+        {{ losowe_odpowiedzi[pytanie - 1][0] }}
+      </div>
+    </label>
+
+    <!-- ODPOWIEDZ B -->
+    <label class="answer-option">
+      <input
+        type="radio"
+        :name="'odp' + pytanie"
+        :id="'odp' + pytanie + '_2'"
+        :value="losowe_odpowiedzi[pytanie - 1][1]"
+        v-model="odpowiedzi_uzytkownika[pytanie - 1]"
+      >
+      <div class="answer-content">
+        <span class="answer-letter">B</span>
+        {{ losowe_odpowiedzi[pytanie - 1][1] }}
+      </div>
+    </label>
+
+    <!-- ODPOWIEDZ C -->
+    <label class="answer-option">
+      <input
+        type="radio"
+        :name="'odp' + pytanie"
+        :id="'odp' + pytanie + '_3'"
+        :value="losowe_odpowiedzi[pytanie - 1][2]"
+        v-model="odpowiedzi_uzytkownika[pytanie - 1]"
+      >
+      <div class="answer-content">
+        <span class="answer-letter">C</span>
+        {{ losowe_odpowiedzi[pytanie - 1][2] }}
+      </div>
+    </label>
+
+    <!-- ODPOWIEDZ D -->
+    <label class="answer-option">
+      <input
+        type="radio"
+        :name="'odp' + pytanie"
+        :id="'odp' + pytanie + '_4'"
+        :value="losowe_odpowiedzi[pytanie - 1][3]"
+        v-model="odpowiedzi_uzytkownika[pytanie - 1]"
+      >
+      <div class="answer-content">
+        <span class="answer-letter">D</span>
+        {{ losowe_odpowiedzi[pytanie - 1][3] }}
+      </div>
+    </label>
+
+    <!-- NIE WIEM -->
+    <label class="answer-option">
+      <input
+        type="radio"
+        :name="'odp' + pytanie"
+        :id="'odp_nieodpowiedzial' + pytanie"
+        value="nie_wiem"
+        v-model="odpowiedzi_uzytkownika[pytanie - 1]"
+      >
+      <div class="answer-content nie-wiem-style">
+        <span class="answer-letter">?</span>
+        Nie wiem
+      </div>
+    </label>
+  </div>
+</div>
+
+<!--------------- PYTANIA BARDZO TRUDNE ----------------->
+<div v-if="poziom_trudnosci == 4">
+  <div class="question-title">
+    Co to za kraj?
+  </div>
+
+  <div class="map-container">
+    <iframe
+      :src="Pytania.bardzo_trudny[pytanie - 1]"
+      allowfullscreen
+      loading="lazy"
+    ></iframe>
+  </div>
+
+  <div class="answers" :key="'bardzo_trudny_' + pytanie">
+    <!-- ODPOWIEDZ A -->
+    <label class="answer-option">
+      <input
+        type="radio"
+        :name="'odp' + pytanie"
+        :id="'odp' + pytanie + '_1'"
+        :value="losowe_odpowiedzi[pytanie - 1][0]"
+        v-model="odpowiedzi_uzytkownika[pytanie - 1]"
+      >
+      <div class="answer-content">
+        <span class="answer-letter">A</span>
+        {{ losowe_odpowiedzi[pytanie - 1][0] }}
+      </div>
+    </label>
+
+    <!-- ODPOWIEDZ B -->
+    <label class="answer-option">
+      <input
+        type="radio"
+        :name="'odp' + pytanie"
+        :id="'odp' + pytanie + '_2'"
+        :value="losowe_odpowiedzi[pytanie - 1][1]"
+        v-model="odpowiedzi_uzytkownika[pytanie - 1]"
+      >
+      <div class="answer-content">
+        <span class="answer-letter">B</span>
+        {{ losowe_odpowiedzi[pytanie - 1][1] }}
+      </div>
+    </label>
+
+    <!-- ODPOWIEDZ C -->
+    <label class="answer-option">
+      <input
+        type="radio"
+        :name="'odp' + pytanie"
+        :id="'odp' + pytanie + '_3'"
+        :value="losowe_odpowiedzi[pytanie - 1][2]"
+        v-model="odpowiedzi_uzytkownika[pytanie - 1]"
+      >
+      <div class="answer-content">
+        <span class="answer-letter">C</span>
+        {{ losowe_odpowiedzi[pytanie - 1][2] }}
+      </div>
+    </label>
+
+    <!-- ODPOWIEDZ D -->
+    <label class="answer-option">
+      <input
+        type="radio"
+        :name="'odp' + pytanie"
+        :id="'odp' + pytanie + '_4'"
+        :value="losowe_odpowiedzi[pytanie - 1][3]"
+        v-model="odpowiedzi_uzytkownika[pytanie - 1]"
+      >
+      <div class="answer-content">
+        <span class="answer-letter">D</span>
+        {{ losowe_odpowiedzi[pytanie - 1][3] }}
+      </div>
+    </label>
+
+    <!-- NIE WIEM -->
+    <label class="answer-option">
+      <input
+        type="radio"
+        :name="'odp' + pytanie"
+        :id="'odp_nieodpowiedzial' + pytanie"
+        value="nie_wiem"
+        v-model="odpowiedzi_uzytkownika[pytanie - 1]"
+      >
+      <div class="answer-content nie-wiem-style">
+        <span class="answer-letter">?</span>
+        Nie wiem
+      </div>
+    </label>
+  </div>
+</div>
+   
+    <div class="finish-button-box" v-if="pytanie == 25">
+
+  <button class="finish-button" @click="policzPunkty">
+    Sprawdź wynik
+  </button>
+
+</div>
+</div>
+</div>
+<!----------------- koniec quizu ----------------->
+<div id="zakonczenie" v-if="quiz_zakonczony == true">
+  <h1>
+    Quiz zakończony
+  </h1>
+  <div>
+    Zakończyłeś Quiz na poziomie:
+    {{ poziom_trudnosci_nazwa[poziom_trudnosci - 1] }}
+  </div>
+  <br>
+  <div>
+    Czas:
+    {{ laczny_czas_minuty }}:<sprawdzanie v-if="laczny_czas_sekundy < 10">0</sprawdzanie>{{ laczny_czas_sekundy }}
+  </div>
+  <br>
+  <div>
+    Zdobyłeś {{ punkty }} / 25 punktów
+  </div>
+  <div>
+    Wynik: {{ Math.floor((punkty / 25) * 100) }}%
+  </div>
+  <br><br>
+  <h2>
+    Błędy
+  </h2>
+  <div class="bledy-table-wrapper">
+  <table>
+    <tr>
+      <th>Twoja odpowiedź</th>
+      <th>Poprawna odpowiedź</th>
+      <th>Zadanie</th>
+    </tr>
+    <tr v-for="(x, i) in bledne_odp_uzytkownika">
+      <td>
+        <sprawdzenie1 v-if="x[0] != '' && x[0] != null"> {{ x[0] }} </sprawdzenie1>
+        <sprawdzenie1 v-if="x[0] == '' || x[0] == null"> nie odpowiedziano na pytanie </sprawdzenie1>
+      </td>
+      <td>
+        {{ x[1] }}
+      </td>
+      <td>
+        <!-- LATWY -->
+        <img
+          v-if="poziom_trudnosci === 1"
+          :src="x[2]"
+          style="
+            width: 180px;
+            border-radius: 12px;
+          ">
+        <!-- SREDNI -->
+        <img
+          v-else-if="poziom_trudnosci === 2"
+          :src="x[2]"
+          style="
+            width: 180px;
+            border-radius: 12px;
+          ">
+        <!-- TRUDNY -->
+        <div v-else-if="poziom_trudnosci === 3">
+          {{ x[2] }}
+        </div>
+        <!-- BARDZO TRUDNY -->
+        <iframe
+          v-else-if="poziom_trudnosci === 4"
+          :src="x[2]"
+          allowfullscreen
+          loading="lazy"
+          style="
+            width: 300px;
+            height: 220px;
+            border: none;
+            border-radius: 12px;
+          "
+        ></iframe>
+      </td>
+    </tr>
+  </table>
+</div>
+</div>
+</div>
+  <script>
+
+    const app = Vue.createApp ({
+  mounted() {
+    
+  },
+  data() {
+    return {
+    timer: 0,
+      laczny_czas_sekundy: 0,
+      laczny_czas_minuty: 0,
+    time_left_question: 300,
+    progress: 100,
+      pytanie: 1,
+    punkty: 0,
+    poziom_trudnosci_nazwa: [
+      "łatwym",
+      "średnim",
+      "trudnym",
+      "bardzo trudnym"
+      ],
+      poziom_trudnosci: 0,
+      quiz_zakonczony: false,
+      odpowiedzi_uzytkownika: [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        ],
+      losowe_odpowiedzi: [
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        []
+        ],
+      Pytania: {
+   
+    kraje: [
+  "Afganistan",
+  "Albania",
+  "Algieria",
+  "Andora",
+  "Angola",
+  "Antigua i Barbuda",
+  "Arabia Saudyjska",
+  "Argentyna",
+  "Armenia",
+  "Australia",
+  "Austria",
+  "Azerbejdżan",
+  "Bahamy",
+  "Bahrajn",
+  "Bangladesz",
+  "Barbados",
+  "Belgia",
+  "Belize",
+  "Benin",
+  "Bhutan",
+  "Białoruś",
+  "Boliwia",
+  "Bośnia i Hercegowina",
+  "Botswana",
+  "Brazylia",
+  "Brunei",
+  "Bułgaria",
+  "Burkina Faso",
+  "Burundi",
+  "Chile",
+  "Chiny",
+  "Chorwacja",
+  "Cypr",
+  "Czad",
+  "Czarnogóra",
+  "Czechy",
+  "Dania",
+  "Demokratyczna Republika Konga",
+  "Dominika",
+  "Dominikana",
+  "Dżibuti",
+  "Egipt",
+  "Ekwador",
+  "Erytrea",
+  "Estonia",
+  "Eswatini",
+  "Etiopia",
+  "Fidżi",
+  "Filipiny",
+  "Finlandia",
+  "Francja",
+  "Gabon",
+  "Gambia",
+  "Ghana",
+  "Grecja",
+  "Grenada",
+  "Grenlandia",
+  "Gruzja",
+  "Gujana",
+  "Gwatemala",
+  "Gwinea",
+  "Gwinea Bissau",
+  "Gwinea Równikowa",
+  "Haiti",
+  "Hiszpania",
+  "Holandia",
+  "Honduras",
+  "Hawaje",
+  "Indie",
+  "Indonezja",
+  "Irak",
+  "Iran",
+  "Irlandia",
+  "Islandia",
+  "Izrael",
+  "Jamajka",
+  "Japonia",
+  "Jemen",
+  "Jordania",
+  "Kambodża",
+  "Kamerun",
+  "Kanada",
+  "Katar",
+  "Kazachstan",
+  "Kenia",
+  "Kirgistan",
+  "Kiribati",
+  "Kolumbia",
+  "Komory",
+  "Kongo",
+  "Kosowo",
+  "Korea Południowa",
+  "Korea Północna",
+  "Kostaryka",
+  "Kuba",
+  "Kuwejt",
+  "Laos",
+  "Lesotho",
+  "Liban",
+  "Liberia",
+  "Libia",
+  "Liechtenstein",
+  "Litwa",
+  "Luksemburg",
+  "Łotwa",
+  "Macedonia Północna",
+  "Madagaskar",
+  "Malawi",
+  "Malediwy",
+  "Malezja",
+  "Mali",
+  "Malta",
+  "Maroko",
+  "Mauretania",
+  "Mauritius",
+  "Meksyk",
+  "Mikronezja",
+  "Mjanma",
+  "Mołdawia",
+  "Monako",
+  "Mongolia",
+  "Mozambik",
+  "Namibia",
+  "Nauru",
+  "Nepal",
+  "Niemcy",
+  "Niger",
+  "Nigeria",
+  "Nikaragua",
+  "Norwegia",
+  "Nowa Zelandia",
+  "Oman",
+  "Pakistan",
+  "Palau",
+  "Palestyna",
+  "Panama",
+  "Papua-Nowa Gwinea",
+  "Paragwaj",
+  "Peru",
+  "Polska",
+  "Portugalia",
+  "Republika Południowej Afryki",
+  "Republika Środkowoafrykańska",
+  "Rosja",
+  "Rumunia",
+  "Rwanda",
+  "Saint Kitts i Nevis",
+  "Saint Lucia",
+  "Saint Vincent i Grenadyny",
+  "Salwador",
+  "Samoa",
+  "San Marino",
+  "Senegal",
+  "Serbia",
+  "Seszele",
+  "Sierra Leone",
+  "Singapur",
+  "Słowacja",
+  "Słowenia",
+  "Somalia",
+  "Sri Lanka",
+  "Stany Zjednoczone",
+  "Sudan",
+  "Sudan Południowy",
+  "Surinam",
+  "Syria",
+  "Sycylia",
+  "Szwajcaria",
+  "Szwecja",
+  "Tadżykistan",
+  "Tajlandia",
+  "Tajwan",
+  "Tanzania",
+  "Timor Wschodni",
+  "Togo",
+  "Tonga",
+  "Trynidad i Tobago",
+  "Tunezja",
+  "Turcja",
+  "Turkmenistan",
+  "Tuvalu",
+  "Uganda",
+  "Ukraina",
+  "Urugwaj",
+  "Uzbekistan",
+  "Vanuatu",
+  "Watykan",
+  "Wenezuela",
+  "Węgry",
+  "Wielka Brytania",
+  "Wietnam",
+  "Włochy",
+  "Wybrzeże Kości Słoniowej",
+  "Wyspy Marshalla",
+  "Wyspy Owcze",
+  "Wyspy Salomona",
+  "Zambia",
+  "Zimbabwe",
+  "Zjednoczone Emiraty Arabskie"
+],
+
+
+  latwy: [
+  "https://flagcdn.com/w320/al.png",
+  "https://flagcdn.com/w320/de.png",
+  "https://flagcdn.com/w320/fr.png",
+  "https://flagcdn.com/w320/es.png",
+  "https://flagcdn.com/w320/it.png",
+  "https://flagcdn.com/w320/us.png",
+  "https://flagcdn.com/w320/ca.png",
+  "https://flagcdn.com/w320/mx.png",
+  "https://flagcdn.com/w320/br.png",
+  "https://flagcdn.com/w320/ar.png",
+  "https://flagcdn.com/w320/gb.png",
+  "https://flagcdn.com/w320/ie.png",
+  "https://flagcdn.com/w320/no.png",
+  "https://flagcdn.com/w320/se.png",
+  "https://flagcdn.com/w320/fi.png",
+  "https://flagcdn.com/w320/dk.png",
+  "https://flagcdn.com/w320/nl.png",
+  "https://flagcdn.com/w320/be.png",
+  "https://flagcdn.com/w320/ch.png",
+  "https://flagcdn.com/w320/at.png",
+  "https://flagcdn.com/w320/cz.png",
+  "https://flagcdn.com/w320/sk.png",
+  "https://flagcdn.com/w320/hu.png",
+  "https://flagcdn.com/w320/ro.png",
+  "https://flagcdn.com/w320/bg.png",
+],
+
+  sredni: [
+  "https://raw.githubusercontent.com/filipwood/projekt_szkola_quiz_pliki/refs/heads/main/obraz_grecja.png",
+  "https://raw.githubusercontent.com/filipwood/projekt_szkola_quiz_pliki/refs/heads/main/obraz_turcja.png",
+  "https://raw.githubusercontent.com/filipwood/projekt_szkola_quiz_pliki/refs/heads/main/obraz_ukraina.png",
+  "https://raw.githubusercontent.com/filipwood/projekt_szkola_quiz_pliki/refs/heads/main/obraz_rosja.png",
+  "https://raw.githubusercontent.com/filipwood/projekt_szkola_quiz_pliki/refs/heads/main/obraz_chiny.png",
+  "https://raw.githubusercontent.com/filipwood/projekt_szkola_quiz_pliki/refs/heads/main/obraz_japonia.png",
+  "https://raw.githubusercontent.com/filipwood/projekt_szkola_quiz_pliki/refs/heads/main/obraz_korea_poludniowa.png",
+  "https://raw.githubusercontent.com/filipwood/projekt_szkola_quiz_pliki/refs/heads/main/obraz_indie.png",
+  "https://raw.githubusercontent.com/filipwood/projekt_szkola_quiz_pliki/refs/heads/main/obraz_pakistan.png",
+  "https://raw.githubusercontent.com/filipwood/projekt_szkola_quiz_pliki/refs/heads/main/obraz_australia.png",
+  "https://raw.githubusercontent.com/filipwood/projekt_szkola_quiz_pliki/refs/heads/main/obraz_nowa_zelandia.png",
+  "https://raw.githubusercontent.com/filipwood/projekt_szkola_quiz_pliki/refs/heads/main/obraz_egipt.png",
+  "https://raw.githubusercontent.com/filipwood/projekt_szkola_quiz_pliki/refs/heads/main/obraz_maroko.png",
+  "https://raw.githubusercontent.com/filipwood/projekt_szkola_quiz_pliki/refs/heads/main/obraz_algieria.png",
+  "https://raw.githubusercontent.com/filipwood/projekt_szkola_quiz_pliki/refs/heads/main/obraz_rpa.png",
+  "https://raw.githubusercontent.com/filipwood/projekt_szkola_quiz_pliki/refs/heads/main/obraz_nigeria.png",
+  "https://raw.githubusercontent.com/filipwood/projekt_szkola_quiz_pliki/refs/heads/main/obraz_kenia.png",
+  "https://raw.githubusercontent.com/filipwood/projekt_szkola_quiz_pliki/refs/heads/main/obraz_arabia_saudyjska.png",
+  "https://raw.githubusercontent.com/filipwood/projekt_szkola_quiz_pliki/refs/heads/main/obraz_iran.png",
+  "https://raw.githubusercontent.com/filipwood/projekt_szkola_quiz_pliki/refs/heads/main/obraz_irak.png",
+  "https://raw.githubusercontent.com/filipwood/projekt_szkola_quiz_pliki/refs/heads/main/obraz_izrael.png",
+  "https://raw.githubusercontent.com/filipwood/projekt_szkola_quiz_pliki/refs/heads/main/obraz_tajlandia.png",
+  "https://raw.githubusercontent.com/filipwood/projekt_szkola_quiz_pliki/refs/heads/main/obraz_wietnam.png",
+  "https://raw.githubusercontent.com/filipwood/projekt_szkola_quiz_pliki/refs/heads/main/obraz_indonezja.png",
+  "https://raw.githubusercontent.com/filipwood/projekt_szkola_quiz_pliki/refs/heads/main/obraz_filipiny.png"
+],
+
+  trudny: [
+  "Gettu hvaða landi þetta tungumál er",
+  "გამოიცანი, რომელი ქვეყნის ენაა ეს",
+  "Գուշակիր, թե որ երկրի լեզուն է սա",
+  "Μάντεψε από ποια χώρα είναι αυτή η γλώσσα",
+  "この言語がどの国のものか当ててください",
+  "이 언어가 어느 나라의 것인지 맞혀보세요",
+  "猜猜这是哪个国家的语言",
+  "ทายว่านี่เป็นภาษาของประเทศอะไร",
+  "Đoán xem đây là ngôn ngữ của quốc gia nào",
+  "נחשו מאיזו מדינה השפה הזאת",
+  "अनुमान लगाओ कि यह किस देश की भाषा है",
+  "Та энэ аль улсын хэл болохыг таагаарай",
+  "Угадай, из какой страны этот язык",
+  "حدس بزن این زبان مال کدام کشور است",
+  "অনুমান করুন এটি কোন দেশের ভাষা",
+  "මේ කුමන රටේ භාෂාවදැයි අනුමාන කරන්න",
+  "ဒီဘာသာစကားက ဘယ်နိုင်ငံကလဲ ခန့်မှန်းပါ",
+  "ទាយថានេះជាភាសារបស់ប្រទេសណា",
+  "ທາຍວ່ານີ້ແມ່ນພາສາຂອງປະເທດໃດ",
+  "འདི་གང་གི་རྒྱལ་ཁབ་ཀྱི་སྐད་ཡིག་ཡིན་ན་ཚོད་དཔག་བྱེད།",
+  "މި ބަސް އެއީ ކޮން ޤައުމެއްގެ ބަހެއްތޯ ބަލާ",
+  "இந்த மொழி எந்த நாட்டுடையது என்று கண்டுபிடியுங்கள்",
+  "یہ اندازہ لگائیں کہ یہ کس ملک کی زبان ہے",
+  "ቋንቋው የየትኛው ሀገር እንደሆነ ገምቱ",
+  "Hulaan kung saang bansa ang wikang ito"
+],
+
+  bardzo_trudny: [
+    "https://www.google.com/maps/embed?pb=!4v1778776230754!6m8!1m7!1sdVEaS2dElY2a6t4CGfExyg!2m2!1d51.44569112737197!2d17.70774159626901!3f77.82766595472154!4f-2.3592420941954515!5f0.7820865974627469",
+    "https://www.google.com/maps/embed?pb=!4v1778777183708!6m8!1m7!1s9IGomAYKyawtaUv_0OoFew!2m2!1d48.97608249312659!2d10.10131702015514!3f182.7038328864179!4f-11.299357695127028!5f0.7820865974627469",
+    "https://www.google.com/maps/embed?pb=!4v1778777285776!6m8!1m7!1sNSnbMpDQST-RIHa8J5kVAQ!2m2!1d42.70960271259697!2d2.524600874075684!3f160.29558680578512!4f0!5f0.7820865974627469",
+    "https://www.google.com/maps/embed?pb=!4v1778777380580!6m8!1m7!1s9CnTFodGElxJSJ5Yuy0Xqw!2m2!1d28.24601610317896!2d-16.62887297925098!3f188.51289285276877!4f-5.586936525158492!5f0.7820865974627469",
+    "https://www.google.com/maps/embed?pb=!4v1778777452398!6m8!1m7!1sCNK_ZTdAu5IMJ37ejjeu3w!2m2!1d42.11177597760077!2d15.48624041874284!3f90.213782847077!4f-5.0063793000565795!5f0.7820865974627469",
+    "https://www.google.com/maps/embed?pb=!4v1778777574293!6m8!1m7!1sHr7VOy1Nesdc9zcNi9TZVQ!2m2!1d26.54671210650744!2d-97.41956210488468!3f260.5941138865074!4f12.210469576432189!5f0.7820865974627469",
+    "https://www.google.com/maps/embed?pb=!4v1778777684147!6m8!1m7!1sCAoSFkNJSE0wb2dLRUlDQWdJQ3UwdWoxYkE.!2m2!1d53.72777067259885!2d-78.70375045402231!3f306.8520436476791!4f-9.739857210403414!5f0.7820865974627469",
+    "https://www.google.com/maps/embed?pb=!4v1778777772314!6m8!1m7!1sQsvgjjknKr0Q7-xD_1uDNQ!2m2!1d22.90491866828835!2d-109.8458673863281!3f299.5700763492972!4f-10.442316830728387!5f0.7820865974627469",
+    "https://www.google.com/maps/embed?pb=!4v1778777888420!6m8!1m7!1siJIieBuKlI8JOI-MK82MDQ!2m2!1d-2.479391404439132!2d-56.10003231770339!3f213.51830150445448!4f-12.386650400356814!5f0.7820865974627469",
+    "https://www.google.com/maps/embed?pb=!4v1778777975269!6m8!1m7!1sPmMA63HT9pSUphF-xT5qGw!2m2!1d26.56344199661562!2d128.080438552815!3f184.19951328875206!4f-21.37438594825575!5",
+    "https://www.google.com/maps/embed?pb=!4v1778778075752!6m8!1m7!1sO-TxCgnsyktZLu_tb3biHg!2m2!1d36.36344480636636!2d129.1870072462099!3f310.612769402068!4f-1.4382834809546239!5f0.4000000000000002",
+    "https://www.google.com/maps/embed?pb=!4v1778778157646!6m8!1m7!1s70S7wB1mWZRDqHlUFiCH6Q!2m2!1d-29.65733852117496!2d150.9441085311183!3f98.76198888369281!4f-5.854444354118513!5f0.7820865974627469",
+    "https://www.google.com/maps/embed?pb=!4v1778778208962!6m8!1m7!1sCAoSFkNJSE0wb2dLRUlDQWdJQ1JfSnUzYnc.!2m2!1d-43.95313382148724!2d-176.5647355103453!3f54.58862249677655!4f-13.744289244369554!5f0.7820865974627469",
+    "https://www.google.com/maps/embed?pb=!4v1778778250555!6m8!1m7!1sNxo2dH-iB0AdKsP_Y3ZoWw!2m2!1d69.63498290579541!2d18.25650657893705!3f169.03364717551528!4f-5.262677715866758!5f0.7820865974627469",
+    "https://www.google.com/maps/embed?pb=!4v1778778286238!6m8!1m7!1sw-sglc4f-D0WVC2d3zmisQ!2m2!1d65.38287712383429!2d20.29185955010177!3f64.54660763553949!4f-5.775691177174437!5f0.7820865974627469",
+    "https://www.google.com/maps/embed?pb=!4v1778778321829!6m8!1m7!1sREiUjyRlb0NnMIZwWcxSiA!2m2!1d64.1947230479188!2d29.59770512436643!3f253.37388039176386!4f-1.240914847942335!5f0.7820865974627469",
+    "https://www.google.com/maps/embed?pb=!4v1778778367375!6m8!1m7!1sE_HAjDtpvy5-BXkj87ax0Q!2m2!1d68.7057818941615!2d-52.87862797506538!3f257.53427198196897!4f-0.4121922778546008!5f0.7820865974627469",
+    "https://www.google.com/maps/embed?pb=!4v1778778432361!6m8!1m7!1sCAoSFkNJSE0wb2dLRUlDQWdJRHF6ZE9QR1E.!2m2!1d53.3949726297626!2d5.28290420322181!3f178.73175158062244!4f-26.209119431323437!5f0.7820865974627469",
+    "https://www.google.com/maps/embed?pb=!4v1778778495705!6m8!1m7!1sKLMseAjfZVRCSzL-VEQCUA!2m2!1d45.99210072859375!2d7.75461572865294!3f314.52145752667724!4f-36.80931665661545!5f0.7820865974627469",
+    "https://www.google.com/maps/embed?pb=!4v1778778550187!6m8!1m7!1sm5vW3N8h-oqLYwvqiYWFrg!2m2!1d47.11432718263912!2d12.50397275681563!3f180.19079968127272!4f-2.004854038621943!5f0.7820865974627469",
+    "https://www.google.com/maps/embed?pb=!4v1778778609366!6m8!1m7!1siPY8fDGx7dnFTppgB6ARNw!2m2!1d50.31910910038837!2d17.17093184160735!3f114.6571411800043!4f0!5f0.7820865974627469",
+    "https://www.google.com/maps/embed?pb=!4v1778778657071!6m8!1m7!1shOseBZ3CW45B3OSaCmJSjw!2m2!1d45.60614448585883!2d24.61918272087503!3f25.61922962147081!4f-15.399752627205132!5f0.7820865974627469",
+    "https://www.google.com/maps/embed?pb=!4v1778778706341!6m8!1m7!1spIApmpnpL08Cb0H_zSq1Bg!2m2!1d38.87268001940992!2d24.47978962699266!3f296.13636348005883!4f-10.122260601267712!5f0.7820865974627469",
+    "https://www.google.com/maps/embed?pb=!4v1778778775398!6m8!1m7!1s_DANnMVMEmh6W0wYV248ww!2m2!1d39.95486110144333!2d38.71360045709501!3f288.3151993862817!4f0!5f0.7820865974627469",
+    "https://www.google.com/maps/embed?pb=!4v1778778810400!6m8!1m7!1s8Yje5PLwDc6wbnYzq8vMvw!2m2!1d-33.34754901603699!2d24.93806918796126!3f93.4996256631151!4f-20.015148922952207!5f0.7820865974627469"
+  ]
+
+},
+
+Pytania_odpowiedzi: {
+
+  latwy: [
+    "Albania",
+    "Niemcy",
+    "Francja",
+    "Hiszpania",
+    "Włochy",
+    "USA",
+    "Kanada",
+    "Meksyk",
+    "Brazylia",
+    "Argentyna",
+    "Wielka Brytania",
+    "Irlandia",
+    "Norwegia",
+    "Szwecja",
+    "Finlandia",
+    "Dania",
+    "Holandia",
+    "Belgia",
+    "Szwajcaria",
+    "Austria",
+    "Czechy",
+    "Słowacja",
+    "Węgry",
+    "Rumunia",
+    "Bułgaria"
+  ],
+
+  sredni: [
+      "Grecja",
+      "Turcja",
+      "Ukraina",
+      "Rosja",
+      "Chiny",
+      "Japonia",
+      "Korea Południowa",
+      "Indie",
+      "Pakistan",
+      "Australia",
+      "Nowa Zelandia",
+      "Egipt",
+      "Maroko",
+      "Algieria",
+      "RPA",
+      "Nigeria",
+      "Kenia",
+      "Arabia Saudyjska",
+      "Iran",
+      "Irak",
+      "Izrael",
+      "Tajlandia",
+      "Wietnam",
+      "Indonezja",
+      "Filipiny"
+  ],
+
+  trudny: [
+  "Islandia",
+  "Gruzja",
+  "Armenia",
+  "Grecja",
+  "Japonia",
+  "Korea Południowa",
+  "Chiny",
+  "Tajlandia",
+  "Wietnam",
+  "Izrael",
+  "Indie",
+  "Mongolia",
+  "Rosja",
+  "Iran",
+  "Bangladesz",
+  "Sri Lanka",
+  "Etiopia",
+  "Myanmar",
+  "Kambodża",
+  "Laos",
+  "Bhutan",
+  "Malediwy",
+  "Tybet",
+  "Tamilowie",
+  "Pakistan"
+],
+
+  bardzo_trudny: [
+    "Polska",
+  "Niemcy",
+  "Francja",
+  "Hiszpania",
+  "Włochy",
+  "USA",
+  "Kanada",
+  "Meksyk",
+  "Brazylia",
+  "Japonia",
+  "Korea Południowa",
+  "Australia",
+  "Nowa Zelandia",
+  "Norwegia",
+  "Szwecja",
+  "Finlandia",
+  "Dania",
+  "Holandia",
+  "Szwajcaria",
+  "Austria",
+  "Czechy",
+  "Rumunia",
+  "Grecja",
+  "Turcja",
+  "RPA"
+  ]
+
+},
+bledne_odp_uzytkownika: [],
+  id_blednej_odp: 0,
+    };
+  },
+
+  methods: {
+  restartquiz() {
+    this.firstquestion();
+    this.progress = 100;
+    this.laczny_czas_sekundy = 0;
+    this.laczny_czas_minuty = 0;
+    this.time_left_question = 300;
+    this.odpowiedzi_uzytkownika = [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        ];
+  },
+    firstquestion() {
+      this.pytanie = 1;
+    },
+    timebar_sekunda() {
+    if(this.time_left_question > 0) {
+      this.time_left_question--;
+      this.progress = Number(((this.time_left_question / 300) * 100).toFixed(2));
+      } else {
+        this.policzPunkty();
+      }
+      if(this.laczny_czas_sekundy == 60) {
+        this.laczny_czas_minuty++;
+      this.laczny_czas_sekundy = this.laczny_czas_sekundy - 59;
+      } else {
+      this.laczny_czas_sekundy++;
+      }
+    },
+    poziom_latwy() {
+      this.poziom_trudnosci = 1;
+      this.odpowiedzi_generator();
+      this.timer = setInterval(() => {
+  this.timebar_sekunda()
+}, 1000);
+
+    },
+    poziom_sredni() {
+      this.poziom_trudnosci = 2;
+      this.odpowiedzi_generator();
+      this.timer = setInterval(() => {
+  this.timebar_sekunda()
+}, 1000);
+    
+    },
+    poziom_trudny() {
+      this.poziom_trudnosci = 3;
+      this.odpowiedzi_generator();
+      this.timer = setInterval(() => {
+  this.timebar_sekunda()
+}, 1000);
+    },
+    poziom_bardzo_trudny() {
+      this.poziom_trudnosci = 4;
+      this.odpowiedzi_generator();
+      this.timer = setInterval(() => {
+  this.timebar_sekunda()
+}, 1000);
+    },
+   
+    odpowiedzi_generator() {
+  const poziomy = ['latwy', 'sredni', 'trudny', 'bardzo_trudny'];
+  const poziom = poziomy[this.poziom_trudnosci - 1];
+
+  for (let i = 0; i < 25; i++) {
+    const poprawna = this.Pytania_odpowiedzi[poziom][i];
+
+    let odpowiedzi = [poprawna];
+
+    while (odpowiedzi.length < 4) {
+      let losowy_index = Math.floor(Math.random() * this.Pytania.kraje.length);
+      let kraj = this.Pytania.kraje[losowy_index];
+     
+      if (!odpowiedzi.includes(kraj)) {
+        odpowiedzi.push(kraj);
+      }
+    }
+    this.shuffle(odpowiedzi);
+    this.losowe_odpowiedzi[i] = odpowiedzi;
+  }
+},
+
+shuffle(array) {
+  for (let i = array.length -1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+},
+
+  policzPunkty() {
+    this.bledne_odp_uzytkownika = [];
+    console.log("dziala");
+    clearInterval(this.timer);
+    this.id_blednej_odp = 0;
+  const poziomy = ['latwy', 'sredni', 'trudny', 'bardzo_trudny'];
+  const poziom = poziomy[this.poziom_trudnosci - 1];
+  this.punkty = 0;
+  for(let y = 0; y < 25; y++) {
+    if (this.odpowiedzi_uzytkownika[y] === this.Pytania_odpowiedzi[poziom][y]) {
+      this.punkty++;
+    } else {
+      this.bledne_odp_uzytkownika.push([
+  this.odpowiedzi_uzytkownika[y],
+  this.Pytania_odpowiedzi[poziom][y],
+  this.Pytania[poziom][y]
+]);
+
+    }
+  }
+  this.quiz_zakonczony = true;
+},
+    nextquestion() {
+
+      if(this.pytanie < 25) {
+        this.pytanie++;
+      }
+    },
+
+    previousquestion() {
+
+      if(this.pytanie > 1) {
+        this.pytanie--;
+      }
+      
+    }
+
+  },
+})
+    app.mount("#app")
+
+  </script>
+
+</body>
+</html>
