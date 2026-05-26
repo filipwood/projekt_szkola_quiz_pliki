@@ -316,11 +316,12 @@
   <div class="question-text">
     {{ Pytania.trudny[pytanie - 1] }}
   </div>
-<audio id="muzyka">
-    <source :src="'https://filipwood.github.io/projekt_szkola_quiz_pliki/trudny' + pytanie + '.mp3'" type="audio/mpeg">
+<audio
+    id="muzyka"
+    :src="'https://filipwood.github.io/projekt_szkola_quiz_pliki/trudny' + pytanie + '.mp3'">
 </audio>
 
-<button onclick="document.getElementById('muzyka').play()">
+<button @click="playAudio">
     Odtwórz audio
 </button>
   <div class="answers" :key="'trudny_' + pytanie">
@@ -1099,6 +1100,12 @@ bledne_odp_uzytkownika: [],
   },
 
   methods: {
+    playAudio() {
+    const audio = document.getElementById("muzyka");
+
+    audio.load();
+    audio.play();
+},
   restartquiz() {
     this.firstquestion();
     this.progress = 100;
