@@ -312,18 +312,19 @@
   <div class="question-title">
     Jakiego kraju/terytorium jest to język?
   </div>
-
-  <div class="question-text">
-    {{ Pytania.trudny[pytanie - 1] }}
-  </div>
 <audio
     id="muzyka"
     :src="'https://filipwood.github.io/projekt_szkola_quiz_pliki/trudny' + pytanie + '.mp3'">
 </audio>
-
-<button @click="playAudio">
+  <div class="question-text">
+    {{ Pytania.trudny[pytanie - 1] }}
+    <button :id="audioplay" @click="playAudio">
     Odtwórz audio
-</button>
+    </button>
+    </div>
+
+
+
   <div class="answers" :key="'trudny_' + pytanie">
     <!-- ODPOWIEDZ A -->
     <label class="answer-option">
