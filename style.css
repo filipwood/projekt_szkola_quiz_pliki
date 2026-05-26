@@ -344,10 +344,12 @@ body {
 .question-text {
   margin-top: 20px;
   font-size: 1.2rem;
+
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 12px;
+
   line-height: 1.5;
 }
 .map-container {
@@ -484,6 +486,8 @@ body {
   border: 3px rgba(255,255,0) solid;
   border-radius: 100%;
   cursor: pointer;
+  position: relative;
+  top: 1px;
 }
 
 #audioplayimg {
