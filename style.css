@@ -477,12 +477,10 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-
+overflow: hidden;
   padding: 0;
 }
-
 #audioplayimg {
-  width: 22px;
-  height: 22px;
-  display: block;
+  width: 18px;
+  height: 18px;
 }
