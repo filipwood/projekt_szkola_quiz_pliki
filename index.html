@@ -98,16 +98,16 @@
     <button @click="restartquiz"> RESTART </button>
     </div>
     <div class="quiz-box-small">
-      <div v-if="poziom === 1">
+      <div v-if="poziom_trudnosci == 1">
         Poziom: Łatwy
       </div>
-      <div v-if="poziom === 2">
+      <div v-if="poziom_trudnosci == 2">
         Poziom: Średni
       </div>
-      <div v-if="poziom === 3">
+      <div v-if="poziom_trudnosci == 3">
         Poziom: Trudny
       </div>
-      <div v-if="poziom === 4">
+      <div v-if="poziom_trudnosci == 4">
         Poziom: Bardzo Trudny
       </div>
     </div><div class="czas-box">
