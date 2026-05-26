@@ -328,10 +328,12 @@
     :src="'https://filipwood.github.io/projekt_szkola_quiz_pliki/trudny' + pytanie + '.mp3'">
 </audio>
   <div class="question-text">
+    <span>
     {{ Pytania.trudny[pytanie - 1] }}
     <button id="audioplay" @click="playAudio">
     <img id="audioplayimg" :src="'mikrofon-ikona.png'">
     </button>
+    </span>
     </div>
 
 
