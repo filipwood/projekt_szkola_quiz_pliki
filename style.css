@@ -469,17 +469,26 @@ body {
   background: rgba(255,255,0,0.5);
   border-radius: 999px;
 }
-
 #audioplay {
-  width: 100px;
-  height: 100px;
+  width: 42px;
+  height: 42px;
+
   display: flex;
   justify-content: center;
   align-items: center;
-overflow: hidden;
+
   padding: 0;
+  overflow: hidden;
+
+  background: rgba(255,255,0,0.45);
+  border: 3px rgba(255,255,0) solid;
+  border-radius: 100%;
+
+  cursor: pointer;
 }
+
 #audioplayimg {
   width: 18px;
   height: 18px;
+  display: block;
 }
