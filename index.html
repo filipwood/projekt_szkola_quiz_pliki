@@ -319,18 +319,18 @@
 </div>
 
 <!--------------- PYTANIA TRUDNE ----------------->
-<div v-if="poziom_trudnosci == 3">
-  <div class="question-title">
-    Jakiego kraju/terytorium jest to język?
-  </div>
-<audio
+  <audio
     id="muzyka"
     :src="'https://filipwood.github.io/projekt_szkola_quiz_pliki/trudny' + pytanie + '.mp3'">
 </audio>
-  <div class="question-text">
+<div v-if="poziom_trudnosci == 3">
+  <div class="question-title">
+    Jakiego kraju/terytorium jest to język?
     <button id="audioplay" @click="playAudio">
     <img id="audioplayimg" :src="'mikrofon-ikona.png'">
     </button>
+  </div>
+  <div class="question-text">
     {{ Pytania.trudny[pytanie - 1] }}
     </div>
 
