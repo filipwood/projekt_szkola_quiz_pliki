@@ -98,7 +98,18 @@
     <button @click="restartquiz"> RESTART </button>
     </div>
     <div class="quiz-box-small">
-      Poziom: Średni
+      <div v-if="poziom = 1">
+        Poziom: Łatwy
+      </div>
+      <div v-if="poziom = 2">
+        Poziom: Średni
+      </div>
+      <div v-if="poziom = 3">
+        Poziom: Trudny
+      </div>
+      <div v-if="poziom = 4">
+        Poziom: Bardzo Trudny
+      </div>
     </div><div class="czas-box">
     <div class="quiz-box-small">
       {{ laczny_czas_minuty }}:<sprawdzanie v-if="laczny_czas_sekundy < 10">0</sprawdzanie>{{ laczny_czas_sekundy }}
