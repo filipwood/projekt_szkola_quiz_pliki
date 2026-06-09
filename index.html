@@ -25,6 +25,24 @@
 <body>
 
   <div id="app">
+    <!--------------- MODAL (ALERT) WYJSCIA Z  QUIZU ----------------->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Czy na pewno chcesz wyjsc z quizu?</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Jeśli opuścisz quiz teraz, cały postęp zostanie utracony i nie będzie można go odzyskać. Czy na pewno chcesz kontynuować?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+        <button type="button" class="btn btn-danger" @click="wyjsciequiz"> Wyjdź </button>
+      </div>
+    </div>
+  </div>
+</div>
 
     <!--------------- WYBOR POZIOMU TRUDNOSCI ----------------->
     <div id="poziomy_trudnosci" v-if="poziom_trudnosci == 0">
@@ -96,6 +114,7 @@
     <button @click="previousquestion"> < </button>
     <button @click="nextquestion" v-if="pytanie < 25"> > </button>
     <button @click="restartquiz"> RESTART </button>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">WYJŚCIE</button>
     </div>
     <div class="quiz-box-small">
       <div v-if="poziom_trudnosci == 1">
@@ -1153,6 +1172,9 @@ bledne_odp_uzytkownika: [],
         null,
         ];
   },
+  wyjsciequiz() {
+    window.location.reload();
+  },
     firstquestion() {
       this.pytanie = 1;
     },
@@ -1273,6 +1295,6 @@ shuffle(array) {
     app.mount("#app")
 
   </script>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
