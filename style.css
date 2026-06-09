@@ -152,12 +152,12 @@ body {
 
 
 .czas-box {
-  width: 320px;
+  width: 370px;
   display: flex;
   justify-content: flex-end;
 }
 .question_change {
-  width: 320px;
+  width: 370px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -166,11 +166,13 @@ body {
 
 .question_change button {
   min-width: 50px;
+  height: 40px;
   padding: 8px 12px;
   border: none;
   border-radius: 12px;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 12px;
+  font-weight: bold;
   font-weight: 700;
   color: white;
   background: rgba(255, 230, 0, 0.18);
@@ -178,6 +180,7 @@ body {
   border: 2px solid rgba(255,255,0,0.45);
   box-shadow: 0 0 20px rgba(255,255,0,0.15);
   transition: 0.15s ease;
+  justify-content: center;
 }
 
 .question_change button:hover {
@@ -492,4 +495,44 @@ body {
   width: 18px;
   height: 18px;
   display: block;
+}
+
+
+
+.modal-content {
+    background: rgba(70, 150, 190, 0.35) !important;
+    backdrop-filter: blur(15px);
+    border: 2px solid #c3d300 !important;
+    color: white !important;
+        --bs-modal-bg: rgba(70, 150, 190, 0.35);
+    --bs-modal-color: white;
+    --bs-modal-border-color: #c3d300;
+}
+
+
+.modal-header {
+    border-bottom: 1px solid rgba(195, 211, 0, 0.4);
+}
+
+.modal-footer {
+    border-top: 1px solid rgba(195, 211, 0, 0.4);
+}
+
+.modal-title {
+    font-weight: 700;
+    color: white;
+}
+
+.modal-body {
+    color: rgba(255,255,255,0.9);
+    font-size: 1.05rem;
+}
+
+.modal-backdrop.show {
+    backdrop-filter: blur(5px);
+    background: rgba(0,0,0,0.4);
+}
+
+.btn-close {
+    filter: invert(1);
 }
