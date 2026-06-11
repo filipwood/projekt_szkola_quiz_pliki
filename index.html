@@ -23,7 +23,17 @@
 </head>
 
 <body>
+<script>
+        function enterFullscreen() {
+            document.documentElement.requestFullscreen()
+                .catch(err => console.error(err));
 
+            // opcjonalnie usuń nasłuchiwanie po pierwszym kliknięciu
+            document.removeEventListener("click", enterFullscreen);
+        }
+
+        document.addEventListener("click", enterFullscreen);
+    </script>
   <div id="app">
     <!--------------- MODAL (ALERT) WYJSCIA Z  QUIZU ----------------->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -537,6 +547,25 @@
 </div>
 <!----------------- koniec quizu ----------------->
 <div id="zakonczenie" v-if="quiz_zakonczony == true">
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Czy na pewno chcesz wrócic to wyboru poziomu trudnosci?</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Jeśli opuścisz quiz teraz, cały postęp zostanie utracony i nie będzie można go odzyskać. Czy na pewno chcesz kontynuować?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+        <button type="button" class="btn btn-danger" @click="wyjsciequiz"> Wyjdź </button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">POWRÓT</button>
+
   <h1>
     Quiz zakończony
   </h1>
