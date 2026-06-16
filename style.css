@@ -251,8 +251,7 @@ body {
 }
 
 .question-image {
-  width: 100%;
-  max-width: 260px;
+  max-height: 150px;
   display: block;
   margin: auto;
   border-radius: 16px;
