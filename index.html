@@ -157,7 +157,7 @@
           role="progressbar"
           :aria-valuenow="progress"
           aria-valuemin="0"
-          aria-valuemax="100"
+          aria-valuemax="100"  <!--- aria... jest przez bootstrap aria-valuemax min maksymalna i minimalna wartosc suwaka ---!>
           :style="{ width: progress + '%' }"
         ></div>
       </div>
@@ -182,12 +182,14 @@
     <!-- ODPOWIEDZ A -->
     <label class="answer-option">
       <input
-        type="radio"
-        :name="'odp' + pytanie"
-        :id="'odp' + pytanie + '_1'"
-        :value="losowe_odpowiedzi[pytanie - 1][0]"
-        v-model="odpowiedzi_uzytkownika[pytanie - 1]"
-      >
+  type="radio"
+  :name="'odp' + pytanie"
+  :id="'odp' + pytanie + '_1'"
+  :value="losowe_odpowiedzi[pytanie - 1][0]"
+  v-model="odpowiedzi_uzytkownika[pytanie - 1]"
+>
+      <!-- value wartosc danej odpowiedzi -->
+      <!--- Vmodel, do jakiej zmiennej trafia wybrana odpowiedz--->
       <div class="answer-content">
         <span class="answer-letter">A</span>
         {{ losowe_odpowiedzi[pytanie - 1][0] }}
@@ -200,8 +202,10 @@
         :name="'odp' + pytanie"
         :id="'odp' + pytanie + '_2'"
         :value="losowe_odpowiedzi[pytanie - 1][1]"
-        v-model="odpowiedzi_uzytkownika[pytanie - 1]"
+  v-model="odpowiedzi_uzytkownika[pytanie - 1]"
       >
+      <!-- value wartosc danej odpowiedzi -->
+      <!--- Vmodel, do jakiej zmiennej trafia wybrana odpowiedz--->
       <div class="answer-content">
         <span class="answer-letter">
           B
@@ -217,8 +221,10 @@
         :name="'odp' + pytanie"
         :id="'odp' + pytanie + '_3'"
         :value="losowe_odpowiedzi[pytanie - 1][2]"
-        v-model="odpowiedzi_uzytkownika[pytanie - 1]"
+  v-model="odpowiedzi_uzytkownika[pytanie - 1]" 
       >
+      <!-- value wartosc danej odpowiedzi -->
+      <!--- Vmodel, do jakiej zmiennej trafia wybrana odpowiedz--->
       <div class="answer-content">
         <span class="answer-letter">
           C
@@ -232,11 +238,11 @@
         type="radio"
         :name="'odp' + pytanie"
         :id="'odp' + pytanie + '_4'"
-
         :value="losowe_odpowiedzi[pytanie - 1][3]"
-
-        v-model="odpowiedzi_uzytkownika[pytanie - 1]"
+  v-model="odpowiedzi_uzytkownika[pytanie - 1]"
       >
+      <!-- value wartosc danej odpowiedzi -->
+      <!--- Vmodel, do jakiej zmiennej trafia wybrana odpowiedz--->
       <div class="answer-content">
         <span class="answer-letter">D</span>
         {{ losowe_odpowiedzi[pytanie - 1][3] }}
@@ -248,9 +254,11 @@
         type="radio"
         :name="'odp' + pytanie"
         :id="'odp_nieodpowiedzial' + pytanie"
-        value="nie_wiem"
-        v-model="odpowiedzi_uzytkownika[pytanie - 1]"
+        value="nie_wiem" 
+  v-model="odpowiedzi_uzytkownika[pytanie - 1]" 
       >
+      <!-- value wartosc danej odpowiedzi -->
+      <!--- Vmodel, do jakiej zmiennej trafia wybrana odpowiedz--->
       <div class="answer-content nie-wiem-style">
         <span class="answer-letter">?</span>
         Nie wiem
@@ -277,8 +285,10 @@
         :name="'odp' + pytanie"
         :id="'odp' + pytanie + '_1'"
         :value="losowe_odpowiedzi[pytanie - 1][0]"
-        v-model="odpowiedzi_uzytkownika[pytanie - 1]"
+  v-model="odpowiedzi_uzytkownika[pytanie - 1]"
       >
+      <!-- value wartosc danej odpowiedzi -->
+      <!--- Vmodel, do jakiej zmiennej trafia wybrana odpowiedz--->
       <div class="answer-content">
         <span class="answer-letter">A</span>
         {{ losowe_odpowiedzi[pytanie - 1][0] }}
@@ -292,8 +302,10 @@
         :name="'odp' + pytanie"
         :id="'odp' + pytanie + '_2'"
         :value="losowe_odpowiedzi[pytanie - 1][1]"
-        v-model="odpowiedzi_uzytkownika[pytanie - 1]"
+  v-model="odpowiedzi_uzytkownika[pytanie - 1]"
       >
+      <!-- value wartosc danej odpowiedzi -->
+      <!--- Vmodel, do jakiej zmiennej trafia wybrana odpowiedz--->
       <div class="answer-content">
         <span class="answer-letter">B</span>
         {{ losowe_odpowiedzi[pytanie - 1][1] }}
@@ -307,8 +319,10 @@
         :name="'odp' + pytanie"
         :id="'odp' + pytanie + '_3'"
         :value="losowe_odpowiedzi[pytanie - 1][2]"
-        v-model="odpowiedzi_uzytkownika[pytanie - 1]"
+        v-model="odpowiedzi_uzytkownika[pytanie - 1]" 
       >
+      <!-- value wartosc danej odpowiedzi -->
+      <!--- Vmodel, do jakiej zmiennej trafia wybrana odpowiedz--->
       <div class="answer-content">
         <span class="answer-letter">C</span>
         {{ losowe_odpowiedzi[pytanie - 1][2] }}
@@ -322,8 +336,10 @@
         :name="'odp' + pytanie"
         :id="'odp' + pytanie + '_4'"
         :value="losowe_odpowiedzi[pytanie - 1][3]"
-        v-model="odpowiedzi_uzytkownika[pytanie - 1]"
+        v-model="odpowiedzi_uzytkownika[pytanie - 1]" 
       >
+      <!-- value wartosc danej odpowiedzi -->
+      <!--- Vmodel, do jakiej zmiennej trafia wybrana odpowiedz--->
       <div class="answer-content">
         <span class="answer-letter">D</span>
         {{ losowe_odpowiedzi[pytanie - 1][3] }}
@@ -337,8 +353,10 @@
         :name="'odp' + pytanie"
         :id="'odp_nieodpowiedzial' + pytanie"
         value="nie_wiem"
-        v-model="odpowiedzi_uzytkownika[pytanie - 1]"
+        v-model="odpowiedzi_uzytkownika[pytanie - 1]" 
       >
+      <!-- value wartosc danej odpowiedzi -->
+      <!--- Vmodel, do jakiej zmiennej trafia wybrana odpowiedz--->
       <div class="answer-content nie-wiem-style">
         <span class="answer-letter">?</span>
         Nie wiem
@@ -348,6 +366,7 @@
 </div>
 
 <!--------------- PYTANIA TRUDNE ----------------->
+<!--------------- wczytywanie audio do konkretnego pytania (potrzebna funkcja bo html ma raka) ----------------->
   <audio
     id="muzyka"
     :src="'https://filipwood.github.io/projekt_szkola_quiz_pliki/trudny' + pytanie + '.mp3'">
@@ -376,6 +395,8 @@
         :value="losowe_odpowiedzi[pytanie - 1][0]"
         v-model="odpowiedzi_uzytkownika[pytanie - 1]"
       >
+      <!-- value wartosc danej odpowiedzi -->
+      <!--- Vmodel, do jakiej zmiennej trafia wybrana odpowiedz--->
       <div class="answer-content">
         <span class="answer-letter">A</span>
         {{ losowe_odpowiedzi[pytanie - 1][0] }}
@@ -391,6 +412,8 @@
         :value="losowe_odpowiedzi[pytanie - 1][1]"
         v-model="odpowiedzi_uzytkownika[pytanie - 1]"
       >
+      <!-- value wartosc danej odpowiedzi -->
+      <!--- Vmodel, do jakiej zmiennej trafia wybrana odpowiedz--->
       <div class="answer-content">
         <span class="answer-letter">B</span>
         {{ losowe_odpowiedzi[pytanie - 1][1] }}
@@ -406,6 +429,8 @@
         :value="losowe_odpowiedzi[pytanie - 1][2]"
         v-model="odpowiedzi_uzytkownika[pytanie - 1]"
       >
+      <!-- value wartosc danej odpowiedzi -->
+      <!--- Vmodel, do jakiej zmiennej trafia wybrana odpowiedz--->
       <div class="answer-content">
         <span class="answer-letter">C</span>
         {{ losowe_odpowiedzi[pytanie - 1][2] }}
@@ -468,6 +493,8 @@
         :value="losowe_odpowiedzi[pytanie - 1][0]"
         v-model="odpowiedzi_uzytkownika[pytanie - 1]"
       >
+      <!-- value wartosc danej odpowiedzi -->
+      <!--- Vmodel, do jakiej zmiennej trafia wybrana odpowiedz--->
       <div class="answer-content">
         <span class="answer-letter">A</span>
         {{ losowe_odpowiedzi[pytanie - 1][0] }}
@@ -483,6 +510,8 @@
         :value="losowe_odpowiedzi[pytanie - 1][1]"
         v-model="odpowiedzi_uzytkownika[pytanie - 1]"
       >
+      <!-- value wartosc danej odpowiedzi -->
+      <!--- Vmodel, do jakiej zmiennej trafia wybrana odpowiedz--->
       <div class="answer-content">
         <span class="answer-letter">B</span>
         {{ losowe_odpowiedzi[pytanie - 1][1] }}
@@ -498,6 +527,8 @@
         :value="losowe_odpowiedzi[pytanie - 1][2]"
         v-model="odpowiedzi_uzytkownika[pytanie - 1]"
       >
+      <!-- value wartosc danej odpowiedzi -->
+      <!--- Vmodel, do jakiej zmiennej trafia wybrana odpowiedz--->
       <div class="answer-content">
         <span class="answer-letter">C</span>
         {{ losowe_odpowiedzi[pytanie - 1][2] }}
@@ -513,6 +544,8 @@
         :value="losowe_odpowiedzi[pytanie - 1][3]"
         v-model="odpowiedzi_uzytkownika[pytanie - 1]"
       >
+      <!-- value wartosc danej odpowiedzi -->
+      <!--- Vmodel, do jakiej zmiennej trafia wybrana odpowiedz--->
       <div class="answer-content">
         <span class="answer-letter">D</span>
         {{ losowe_odpowiedzi[pytanie - 1][3] }}
@@ -528,6 +561,8 @@
         value="nie_wiem"
         v-model="odpowiedzi_uzytkownika[pytanie - 1]"
       >
+      <!-- value wartosc danej odpowiedzi -->
+      <!--- Vmodel, do jakiej zmiennej trafia wybrana odpowiedz--->
       <div class="answer-content nie-wiem-style">
         <span class="answer-letter">?</span>
         Nie wiem
@@ -546,6 +581,7 @@
 </div>
 </div>
 <!----------------- koniec quizu ----------------->
+<!------------ modal bootstrap ------------>
 <div id="zakonczenie" v-if="quiz_zakonczony == true">
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -564,6 +600,7 @@
     </div>
   </div>
 </div>
+  <!------- przycisk do wywolywania modala -------->
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">POWRÓT</button>
 
   <h1>
@@ -583,12 +620,15 @@
     Zdobyłeś {{ punkty }} / 25 punktów
   </div>
   <div>
+    <!---- liczenie wyniku w procentach ---->
     Wynik: {{ Math.floor((punkty / 25) * 100) }}%
   </div>
   <br><br>
   <h2>
     Błędy
   </h2>
+    <!---- pokazywanie bledow w tabeli ---->
+    <!-- wrapper, div by "twoja odpowiedz", "poprawna odpowiedz" i "zadanie" byly przed odpowiedziami, zindex vibe -->
   <div class="bledy-table-wrapper">
   <table>
     <tr>
@@ -626,6 +666,7 @@
           {{ x[2] }}
         </div>
         <!-- BARDZO TRUDNY -->
+    <!---- pokazywanie iframe z google street view ---->
         <iframe
           v-else-if="poziom_trudnosci === 4"
           :src="x[2]"
@@ -647,9 +688,6 @@
   <script>
 
     const app = Vue.createApp ({
-  mounted() {
-    
-  },
   data() {
     return {
     timer: 0,
@@ -722,7 +760,6 @@
         []
         ],
       Pytania: {
-   
     kraje: [
   "Afganistan",
   "Albania",
@@ -924,9 +961,8 @@
   "Zimbabwe",
   "Zjednoczone Emiraty Arabskie"
 ],
-
-
   latwy: [
+    // linki do obrazow flag
   "https://flagcdn.com/w320/al.png",
   "https://flagcdn.com/w320/de.png",
   "https://flagcdn.com/w320/fr.png",
@@ -955,6 +991,7 @@
 ],
 
   sredni: [
+    // linki do obrazow kontorow krajow z githuba
   "https://raw.githubusercontent.com/filipwood/projekt_szkola_quiz_pliki/refs/heads/main/obraz_grecja.png",
   "https://raw.githubusercontent.com/filipwood/projekt_szkola_quiz_pliki/refs/heads/main/obraz_turcja.png",
   "https://raw.githubusercontent.com/filipwood/projekt_szkola_quiz_pliki/refs/heads/main/obraz_ukraina.png",
@@ -983,6 +1020,7 @@
 ],
 
   trudny: [
+    // jezyki 
   "Gettu hvaða landi þetta tungumál er",
   "გამოიცანი, რომელი ქვეყნის ენაა ეს",
   "Գուշակիր, թե որ երկրի լեզուն է սա",
@@ -1004,13 +1042,14 @@
   "ທາຍວ່ານີ້ແມ່ນພາສາຂອງປະເທດໃດ",
   "འདི་གང་གི་རྒྱལ་ཁབ་ཀྱི་སྐད་ཡིག་ཡིན་ན་ཚོད་དཔག་བྱེད།",
   "މި ބަސް އެއީ ކޮން ޤައުމެއްގެ ބަހެއްތޯ ބަލާ",
-  "இந்த மொழி எந்த நாட்டுடையது என்று கண்டுபிடியுங்கள்",
+  "இந்த மொழி எந்த நாட்டுடையது என்று கண்டுபிடியுங்கள்ඞ",
   "یہ اندازہ لگائیں کہ یہ کس ملک کی زبان ہے",
   "ቋንቋው የየትኛው ሀገር እንደሆነ ገምቱ",
   "Hulaan kung saang bansa ang wikang ito"
 ],
 
   bardzo_trudny: [
+    // linki do streetview z google 
     "https://www.google.com/maps/embed?pb=!4v1778776230754!6m8!1m7!1sdVEaS2dElY2a6t4CGfExyg!2m2!1d51.44569112737197!2d17.70774159626901!3f77.82766595472154!4f-2.3592420941954515!5f0.7820865974627469",
     "https://www.google.com/maps/embed?pb=!4v1778777183708!6m8!1m7!1s9IGomAYKyawtaUv_0OoFew!2m2!1d48.97608249312659!2d10.10131702015514!3f182.7038328864179!4f-11.299357695127028!5f0.7820865974627469",
     "https://www.google.com/maps/embed?pb=!4v1778777285776!6m8!1m7!1sNSnbMpDQST-RIHa8J5kVAQ!2m2!1d42.70960271259697!2d2.524600874075684!3f160.29558680578512!4f0!5f0.7820865974627469",
@@ -1163,7 +1202,6 @@ bledne_odp_uzytkownika: [],
   methods: {
     playAudio() {
     const audio = document.getElementById("muzyka");
-
     audio.load();
     audio.play();
 },
@@ -1207,6 +1245,7 @@ bledne_odp_uzytkownika: [],
     firstquestion() {
       this.pytanie = 1;
     },
+    // funkcja do aktualizowania timebaru
     timebar_sekunda() {
     if(this.time_left_question > 0) {
       this.time_left_question--;
@@ -1251,7 +1290,7 @@ bledne_odp_uzytkownika: [],
   this.timebar_sekunda()
 }, 1000);
     },
-   
+   // generowanie losowych odpowiedzi
     odpowiedzi_generator() {
   const poziomy = ['latwy', 'sredni', 'trudny', 'bardzo_trudny'];
   const poziom = poziomy[this.poziom_trudnosci - 1];
@@ -1262,18 +1301,23 @@ bledne_odp_uzytkownika: [],
     let odpowiedzi = [poprawna];
 
     while (odpowiedzi.length < 4) {
+      //losowanie losowej odpowiedzi
       let losowy_index = Math.floor(Math.random() * this.Pytania.kraje.length);
       let kraj = this.Pytania.kraje[losowy_index];
-     
+     // sprawdzanie czy ta odpowiedz jest juz wylosowana lub poprawna
       if (!odpowiedzi.includes(kraj)) {
+        // jesli nie, dodawanie do odpowiedzi
         odpowiedzi.push(kraj);
       }
     }
+    // mieszanie tablicy
     this.shuffle(odpowiedzi);
+    //dodawanie losowych odpowiedzi do tablicy z odpowiedziami dla konkretnego pytania
     this.losowe_odpowiedzi[i] = odpowiedzi;
   }
 },
 
+  // mieszanie tablicy
 shuffle(array) {
   for (let i = array.length -1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
