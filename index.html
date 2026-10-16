@@ -28,7 +28,6 @@
             document.documentElement.requestFullscreen()
                 .catch(err => console.error(err));
 
-            // opcjonalnie usuń nasłuchiwanie po pierwszym kliknięciu
             document.removeEventListener("click", enterFullscreen);
         }
 
